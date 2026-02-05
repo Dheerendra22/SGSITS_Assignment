@@ -1,0 +1,74 @@
+// C++ program to print DFS traversal from
+#include <bits/stdc++.h>
+using namespace std;
+
+class Graph {
+public:
+	map<int, bool> visited;
+	map<int, list<int> > adj;
+	stack<int> stk;
+
+	void addEdge(int v, int w)
+    {
+        adj[v].push_back(w);
+    }
+
+	void DFS(int v)
+    {
+
+        visited[v] = true;
+        cout<<v<<" ";
+
+        list<int>::iterator i;
+        for (i = adj[v].begin(); i != adj[v].end(); ++i)
+		if (!visited[*i])
+			DFS(*i);
+    }
+
+	void DFS_Stk(int v) {
+    stack<int> stk;
+    stk.push(v);
+
+    while (!stk.empty()) {
+
+        int curr = stk.top();   // 🔹 get top
+        stk.pop();              
+
+        if (!visited[curr]) {
+            visited[curr] = true;
+            cout << curr << " ";
+
+            // push neighbors
+            for (auto i = adj[curr].rbegin(); i != adj[curr].rend(); ++i) {
+                if (!visited[*i]) {
+                    stk.push(*i);
+                }
+            }
+        }
+    }
+}
+
+
+
+};
+
+
+int main()
+{
+	Graph g;
+	g.addEdge(0, 1);
+	g.addEdge(0, 2);
+	g.addEdge(1, 2);
+	g.addEdge(2, 0);
+	g.addEdge(2, 3);
+	g.addEdge(3, 3);
+
+	cout << "Following is Depth First Traversal"
+			" (starting from vertex 2) \n";
+
+	g.DFS_Stk(2);
+
+	return 0;
+}
+
+// improved by Vishnudev C
